@@ -106,14 +106,21 @@ def render_report(data, start, end):
         # Construct the path to the templates directory
         template_path = os.path.join(current_directory, '..', 'templates')
 
-        # Load the Jinja2 environment and the template from the templates directory
+        # Load the Jinja2 environment with the template directory
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path))
+        
+        # Load the specific template file
         template = env.get_template('template.html')
         
-        # Render the template with the provided data and return the resulting HTML string
+        # Render the template with the provided data, start time, and end time
         return template.render(data=data, start=start, end=end)
     except Exception as e:
-        # Log any errors that occur during the template rendering
+        # Log any errors that occur during template rendering
         logger.error(f"Error rendering template: {str(e)}")
+        
+        # Print the traceback for debugging purposes
         traceback.print_exc()
+        
+        # Raise the exception to be handled by the caller
         raise
+

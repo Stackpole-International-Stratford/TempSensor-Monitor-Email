@@ -31,7 +31,6 @@ def main():
     try:
         # Log db_config for debugging
         from data.db import db_config
-        logger.debug(f"Database config: {db_config}")
 
         # Retrieve data from the database within the calculated time range
         data = get_data(start_time, end_time)
