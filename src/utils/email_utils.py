@@ -1,26 +1,28 @@
 # src/utils/email_utils.py
 
+import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
 from utils.logging_utils import setup_logger
+
+# Load environment variables from .env file
+load_dotenv()
 
 logger = setup_logger()
 
 def load_email_config():
-    # Hardcoded email configuration for testing
     email_config = {
-        'server': 'smtp01.stackpole.ca',
-        'from': 'tyler.careless@johnsonelectric.com',
-        'to': ['tyler.careless@johnsonelectric.com'],
-        'subject': 'Daily Temperature Sensor Report'
+        'server': os.getenv('EMAIL_SERVER'),
+        'from': os.getenv('EMAIL_FROM'),
+        'to': os.getenv('EMAIL_LIST').split(','), 
+        'subject': os.getenv('EMAIL_SUBJECT')
     }
     return email_config
 
 def get_email_list():
-    # Hardcoded email list for testing
-    email_list = ['tyler.careless@johnsonelectric.com']
-    return email_list
+    return os.getenv('EMAIL_LIST').split(',')
 
 def send_email(report, email_config):
     message = MIMEMultipart("alternative")
