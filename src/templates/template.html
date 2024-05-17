@@ -38,27 +38,27 @@
 </head>
 <body>
 
-<h1>AB1V Autogauge Production vs Scrap</h1>
+<h1>Temperature Monitor Report</h1>
 <h3>{{ start }} to {{ end }}</h3>
 <table>
     <tr>
-        <th>Part</th>
-        <th>Good</th>
-        <th>Rejects</th>
+        <th>IP Address</th>
+        <th>Timestamp</th>
+        <th>Temperature</th>
+        <th>Humidity</th>
+        <th>Humidex</th>
+        <th>Zone</th>
+        <th>Area</th>
     </tr>
-    {%- for part in data %}
+    {%- for item in data %}
     <tr>
-        <td>{{ part['part_number'] }}</td>
-        <td>{{ part['good'] }}</td>
-        {%- if part['reject'] %}
-            {%- for key, value in part['reject'].items() %}
-                {%- if value['count'] > 0 %}
-                    <td>{{ value['label'] }}: {{ value['count'] }}</td>
-                {%- endif %}
-            {%- endfor %}
-        {%- else %}
-            <td>No rejects</td>
-        {%- endif %}
+        <td>{{ item['ip_address'] }}</td>
+        <td>{{ item['timestamp'] }}</td>
+        <td>{{ item['temp'] }}</td>
+        <td>{{ item['humidity'] }}</td>
+        <td>{{ item['humidex'] }}</td>
+        <td>{{ item['zone'] }}</td>
+        <td>{{ item['area'] }}</td>
     </tr>
     {%- endfor %}
 </table>
