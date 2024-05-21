@@ -1,5 +1,3 @@
-# src/utils/report_utils.py
-
 from datetime import datetime, timedelta
 from utils.logging_utils import setup_logger
 import jinja2
@@ -7,6 +5,7 @@ import traceback
 import os
 import mysql.connector
 from data.db import db_config
+from jinja2_humanize_extension import HumanizeExtension
 
 logger = setup_logger()
 
@@ -46,9 +45,6 @@ def get_data(start, end):
             Each dictionary contains the following keys:
             - 'ip_address': The IP address of the monitor.
             - 'timestamp': The human-readable timestamp of the last report from the monitor.
-            - 'temp': The temperature recorded by the monitor.
-            - 'humidity': The humidity recorded by the monitor.
-            - 'humidex': The humidex calculated from the temperature and humidity.
             - 'zone': The zone in which the monitor is located.
             - 'area': The area in which the monitor is located.
     """
@@ -59,7 +55,7 @@ def get_data(start, end):
         
         # Define the query to fetch monitors with a timestamp older than 5 minutes
         query = """
-        SELECT ip_address, timestamp, temp, humidity, humidex, zone, area
+        SELECT ip_address, timestamp, zone, area
         FROM temp_monitors
         WHERE timestamp < UNIX_TIMESTAMP() - 300
         """
@@ -70,9 +66,9 @@ def get_data(start, end):
         # Fetch all the rows returned by the query
         data = cursor.fetchall()
         
-        # Format the timestamp to a human-readable format with minutes and AM/PM
+        # Convert timestamps to human-readable format
         for item in data:
-            item['timestamp'] = datetime.fromtimestamp(item['timestamp']).strftime('%Y-%m-%d %I:%M %p')
+            item['timestamp'] = datetime.fromtimestamp(item['timestamp'])
         
         # Close the cursor and the connection to free up resources
         cursor.close()
@@ -106,8 +102,11 @@ def render_report(data, start, end):
         # Construct the path to the templates directory
         template_path = os.path.join(current_directory, '..', 'templates')
 
-        # Load the Jinja2 environment with the template directory
-        env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path))
+        # Load the Jinja2 environment with the template directory and the Humanize extension
+        env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(template_path),
+            extensions=[HumanizeExtension]
+        )
         
         # Load the specific template file
         template = env.get_template('template.html')
@@ -123,4 +122,3 @@ def render_report(data, start, end):
         
         # Raise the exception to be handled by the caller
         raise
-

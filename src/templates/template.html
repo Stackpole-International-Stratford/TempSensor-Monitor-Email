@@ -45,20 +45,14 @@
 <table>
     <tr>
         <th>IP Address</th>
-        <th>Timestamp</th>
-        <th>Temperature</th>
-        <th>Humidity</th>
-        <th>Humidex</th>
+        <th>Last Online</th>
         <th>Zone</th>
         <th>Area</th>
     </tr>
     {%- for item in data %}
     <tr>
         <td>{{ item['ip_address'] }}</td>
-        <td>{{ item['timestamp'] }}</td>
-        <td>{{ item['temp'] }}</td>
-        <td>{{ item['humidity'] }}</td>
-        <td>{{ item['humidex'] }}</td>
+        <td>{{ item['timestamp'].strftime('%Y-%m-%d %I:%M %p') }} ({{ item['timestamp'] | humanize.naturaltime }})</td>
         <td>{{ item['zone'] }}</td>
         <td>{{ item['area'] }}</td>
     </tr>
