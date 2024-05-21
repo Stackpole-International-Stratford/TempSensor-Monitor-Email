@@ -52,7 +52,7 @@
     {%- for item in data %}
     <tr>
         <td>{{ item['ip_address'] }}</td>
-        <td>{{ item['timestamp'].strftime('%Y-%m-%d %I:%M %p') }} ({{ item['timestamp'] | humanize.naturaltime }})</td>
+        <td>{{ item['timestamp'].strftime('%Y-%m-%d %I:%M %p') }} ({{ item['timestamp'] | humanize_naturaltime }})</td>
         <td>{{ item['zone'] }}</td>
         <td>{{ item['area'] }}</td>
     </tr>

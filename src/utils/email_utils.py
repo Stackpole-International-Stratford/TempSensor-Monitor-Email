@@ -7,6 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 from utils.logging_utils import setup_logger
 
+
 # Load environment variables from .env file
 load_dotenv()
 

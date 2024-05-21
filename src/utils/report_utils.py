@@ -7,6 +7,7 @@ import mysql.connector
 from data.db import db_config
 from jinja2_humanize_extension import HumanizeExtension
 
+# Set up the logger for debugging and logging purposes
 logger = setup_logger()
 
 def shift_times(date, date_offset=0):
@@ -44,7 +45,7 @@ def get_data(start, end):
     - list: A list of dictionaries, each containing information about the non-reporting temperature sensors.
             Each dictionary contains the following keys:
             - 'ip_address': The IP address of the monitor.
-            - 'timestamp': The human-readable timestamp of the last report from the monitor.
+            - 'timestamp': The timestamp of the last report from the monitor as a datetime object.
             - 'zone': The zone in which the monitor is located.
             - 'area': The area in which the monitor is located.
     """
@@ -66,7 +67,7 @@ def get_data(start, end):
         # Fetch all the rows returned by the query
         data = cursor.fetchall()
         
-        # Convert timestamps to human-readable format
+        # Convert timestamps to datetime objects
         for item in data:
             item['timestamp'] = datetime.fromtimestamp(item['timestamp'])
         
@@ -86,8 +87,8 @@ def render_report(data, start, end):
 
     Parameters:
     - data (list of dict): The data to be included in the report, typically containing information about non-reporting sensors.
-    - start (datetime): The start time for the report period.
-    - end (datetime): The end time for the report period.
+    - start (str): The start time for the report period formatted as a string.
+    - end (str): The end time for the report period formatted as a string.
 
     Returns:
     - str: The rendered HTML content of the report.
@@ -105,7 +106,7 @@ def render_report(data, start, end):
         # Load the Jinja2 environment with the template directory and the Humanize extension
         env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(template_path),
-            extensions=[HumanizeExtension]
+            extensions=['jinja2_humanize_extension.HumanizeExtension']
         )
         
         # Load the specific template file

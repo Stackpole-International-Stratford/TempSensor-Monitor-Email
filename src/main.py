@@ -5,6 +5,8 @@ from utils.email_utils import send_email, load_email_config
 from utils.report_utils import shift_times, get_data, render_report
 from utils.logging_utils import setup_logger
 import traceback
+from jinja2_humanize_extension import HumanizeExtension
+
 
 # Set up the logger for debugging and logging purposes
 logger = setup_logger()
