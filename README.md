@@ -1,4 +1,4 @@
-# Basic Daily Email Boilerplate
+# TempSensor Monitor Daily Email
 
 requires a .env file with the following variables:
 - DB_USER
