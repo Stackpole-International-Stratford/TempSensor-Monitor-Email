@@ -35,7 +35,13 @@ def main():
         
         # Check if there are no offline monitors
         if not data:
-            logger.info("No offline monitors found. No email will be sent.")
+            # Check if today is Monday
+            if datetime.now().weekday() == 0:  # Monday
+                report_html = render_report([], start_time.strftime("%Y-%m-%d %I:%M %p"), end_time.strftime("%Y-%m-%d %I:%M %p"))
+                send_email(report_html, email_config)
+                logger.info("No offline monitors found. Weekly status email sent on Mondays")
+            else:
+                logger.info("No offline monitors found. No email will be sent.")
             return
         
         # Render the retrieved data into an HTML report
